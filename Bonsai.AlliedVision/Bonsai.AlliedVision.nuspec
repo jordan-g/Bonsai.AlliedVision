@@ -6,10 +6,11 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <iconUrl>https://bitbucket.org/horizongir/bonsai/raw/7aacc64dc4647e57362ab310238591dc197fef0d/Resources/Bonsai.png</iconUrl>
+    <licenseUrl>https://raw.githubusercontent.com/jordan-g/Bonsai.AlliedVision/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jordan-g/Bonsai.AlliedVision</projectUrl>
     <description>$description$</description>
     <copyright>Jordan Guerguiev © 2017</copyright>
-    <tags>Bonsai AlliedVision Vimba</tags>
+    <tags>Bonsai Allied Vision Vimba</tags>
   </metadata>
   <files>
     <file src="Bonsai.AlliedVision.props" target="build\net45"/>

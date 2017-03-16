@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bonsai - Allied Vision Library")]
-[assembly: AssemblyDescription("Bonsai Library containing modules for acquiring images from Allied Vision cameras.")]
+[assembly: AssemblyDescription("Bonsai Library containing modules for acquiring images from Allied Vision cameras.\n\nNOTE:\nDue to the way that the Vimba.NET SDK is built, Bonsai needs to be run using the command-line flag --noboot when using this package.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jordan Guerguiev")]
 [assembly: AssemblyProduct("Bonsai.AlliedVision")]
@@ -32,6 +32,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
+[assembly: AssemblyInformationalVersion("1.0.0.1")]
