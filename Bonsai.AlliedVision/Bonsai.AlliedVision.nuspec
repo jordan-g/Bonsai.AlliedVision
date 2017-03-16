@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <iconUrl>https://bitbucket.org/horizongir/bonsai/raw/7aacc64dc4647e57362ab310238591dc197fef0d/Resources/Bonsai.png</iconUrl>
+    <description>$description$</description>
+    <copyright>Jordan Guerguiev © 2017</copyright>
+    <tags>Bonsai AlliedVision Vimba</tags>
+  </metadata>
+  <files>
+    <file src="Bonsai.AlliedVision.props" target="build\net45"/>
+    <file src="Bonsai.AlliedVision.targets" target="build\net45"/>
+  </files>
+</package>
