@@ -109,7 +109,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="VimbaNET, Version=1.5.0.19270, Culture=neutral, PublicKeyToken=96b729f24f119b9a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Externals\VimbaNET\Bin\Win64\VimbaNET.dll</HintPath>
+      <HintPath>..\Externals\VimbaNET\net\x64\VimbaNET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
