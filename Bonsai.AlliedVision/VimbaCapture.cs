@@ -11,6 +11,7 @@ using AVT.VmbAPINET;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using System.ComponentModel;
 
 namespace Bonsai.AlliedVision
 {
@@ -31,7 +32,7 @@ namespace Bonsai.AlliedVision
             }
             catch (COMException)
             {
-                // This occurs with an HRESULT meaning 
+                // This occurs with an HRESULT meaning
                 // "A different runtime was already bound to the legacy CLR version 2 activation policy."
                 LegacyV2RuntimeEnabledSuccessfully = false;
             }
@@ -58,8 +59,12 @@ namespace Bonsai.AlliedVision
         }
     }
 
+    [Description("Produces a sequence of images acquired from an Allied Vision camera using the Vimba SDK.")]
     public class VimbaCapture : Source<VimbaDataFrame>
     {
+        [Description("Exposure time (microseconds).")]
+        public float ExposureTime { get; set; }
+
         IObservable<VimbaDataFrame> source;
         readonly object captureLock = new object();
         Camera camera;
@@ -68,19 +73,25 @@ namespace Bonsai.AlliedVision
 
         private void OnFrameReceived(Frame frame)
         {
-            unsafe
+            if (VmbFrameStatusType.VmbFrameStatusComplete == frame.ReceiveStatus)
             {
-                var depth = frame.PixelFormat == VmbPixelFormatType.VmbPixelFormatMono16 ? IplDepth.U16 : IplDepth.U8;
-                fixed (byte* p = frame.Buffer)
+                unsafe
                 {
-                    IntPtr ptr = (IntPtr)p;
-                    var bitmapHeader = new IplImage(new Size((int)frame.Width, (int)frame.Height), depth, 1, ptr);
-                    output = new IplImage(bitmapHeader.Size, bitmapHeader.Depth, bitmapHeader.Channels);
-                    CV.Copy(bitmapHeader, output);
+                    var depth = frame.PixelFormat == VmbPixelFormatType.VmbPixelFormatMono16 ? IplDepth.U16 : IplDepth.U8;
 
-                    camera.QueueFrame(frame);
+                    fixed (byte* p = frame.Buffer)
+                    {
+                        newFrame = false;
 
-                    newFrame = true;
+                        IntPtr ptr = (IntPtr)p;
+                        var bitmapHeader = new IplImage(new Size((int)frame.Width, (int)frame.Height), depth, 1, ptr);
+                        output = new IplImage(bitmapHeader.Size, bitmapHeader.Depth, bitmapHeader.Channels);
+                        CV.Copy(bitmapHeader, output);
+
+                        camera.QueueFrame(frame);
+
+                        newFrame = true;
+                    }
                 }
             }
         }
@@ -101,18 +112,32 @@ namespace Bonsai.AlliedVision
 
                             CameraCollection cameras = vimba.Cameras;
 
-                            string id = cameras[0].Id;
+                            Console.WriteLine(Index);
+                            Console.WriteLine(ExposureTime);
+
+                            string id = cameras[Index].Id;
+
+                            Console.WriteLine(id);
 
                             camera = vimba.OpenCameraByID(id, VmbAccessModeType.VmbAccessModeFull);
-                            camera.OnFrameReceived += OnFrameReceived;
+                            camera.OnFrameReceived += new Camera.OnFrameReceivedHandler(OnFrameReceived);
 
+                            FeatureCollection features = null;
+                            Feature feature = null;
                             try
                             {
-                                camera.StartContinuousImageAcquisition(3);
 
+                                features = camera.Features;
+
+                                if (ExposureTime != 0)
+                                {
+                                    feature = features["ExposureTime"];
+                                    feature.FloatValue = ExposureTime;
+                                }
+
+                                camera.StartContinuousImageAcquisition(100);
                                 while (!cancellationToken.IsCancellationRequested)
                                 {
-
                                     if (newFrame == true)
                                     {
                                         observer.OnNext(new VimbaDataFrame(output));
@@ -121,7 +146,6 @@ namespace Bonsai.AlliedVision
                             }
                             finally
                             {
-                                camera.OnFrameReceived -= OnFrameReceived;
                                 camera.StopContinuousImageAcquisition();
                                 camera.Close();
                                 vimba.Shutdown();
@@ -137,6 +161,7 @@ namespace Bonsai.AlliedVision
             }
         }
 
+        [Description("The index of the camera from which to acquire images.")]
         public int Index { get; set; }
 
         public override IObservable<VimbaDataFrame> Generate()
