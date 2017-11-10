@@ -10,19 +10,16 @@ namespace Bonsai.AlliedVision
 {
     public class VimbaDataFrame
     {
-        public VimbaDataFrame(IplImage image, Int64 timestamp, Int64 frequency, UInt64 frameID)
+        public VimbaDataFrame(IplImage image, UInt64 vimbaTimestamp, UInt64 frameID)
         {
             Image = image;
-            Timestamp = timestamp;
-            Frequency = frequency;
+            VimbaTimestamp = vimbaTimestamp;
             FrameID = frameID;
         }
 
         public IplImage Image { get; private set; }
 
-        public Int64 Timestamp { get; private set; }
-
-        public Int64 Frequency { get; private set; }
+        public UInt64 VimbaTimestamp { get; private set; }
 
         public UInt64 FrameID { get; private set; }
 

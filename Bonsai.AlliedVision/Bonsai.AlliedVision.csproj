@@ -121,7 +121,9 @@
     <None Include="Bonsai.AlliedVision.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Bonsai.AlliedVision.props" />
+    <None Include="Bonsai.AlliedVision.props">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Bonsai.AlliedVision.targets">
       <SubType>Designer</SubType>
     </None>
