@@ -382,25 +382,22 @@ namespace Bonsai.AlliedVision
 
         private void OnFrameReceived(Frame frame)
         {
-            try
+            if (VmbFrameStatusType.VmbFrameStatusComplete == frame.ReceiveStatus)
             {
-                if (VmbFrameStatusType.VmbFrameStatusComplete == frame.ReceiveStatus)
+                IplImage output;
+                unsafe
                 {
-                    IplImage output;
-                    unsafe
+                    fixed (byte* p = frame.Buffer)
                     {
-                        fixed (byte* p = frame.Buffer)
-                        {
-                            IplImage bitmapHeader = new IplImage(new Size((int)frame.Width, (int)frame.Height), IplDepth.U8, 1, (IntPtr)p);
-                            output = new IplImage(bitmapHeader.Size, bitmapHeader.Depth, bitmapHeader.Channels);
-                            CV.Copy(bitmapHeader, output);
-                        }
+                        IplImage bitmapHeader = new IplImage(new Size((int)frame.Width, (int)frame.Height), IplDepth.U8, 1, (IntPtr)p);
+                        output = new IplImage(bitmapHeader.Size, bitmapHeader.Depth, bitmapHeader.Channels);
+                        CV.Copy(bitmapHeader, output);
                     }
-                    global_observer.OnNext(new VimbaDataFrame(output, frame.Timestamp, frame.FrameID));
                 }
+                camera.QueueFrame(frame);
+                global_observer.OnNext(new VimbaDataFrame(output, frame.Timestamp, frame.FrameID));
             }
-            finally
-            {
+            else {
                 camera.QueueFrame(frame);
             }
         }

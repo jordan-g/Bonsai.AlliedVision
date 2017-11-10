@@ -118,9 +118,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Bonsai.AlliedVision.nuspec">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Bonsai.AlliedVision.nuspec" />
     <None Include="Bonsai.AlliedVision.props">
       <SubType>Designer</SubType>
     </None>
