@@ -6,7 +6,9 @@ The NuGet package for this library can be found in Bonsai's package manager. It 
 
 Additionally, a NuGet package can be generated from source by running:
 
-`nuget pack Bonsai.AlliedVision.csproj`
+```batchfile
+.nuget\NuGet.exe pack Bonsai.AlliedVision\Bonsai.AlliedVision.csproj
+```
 
 ## Usage
 After the NuGet package is added to Bonsai, a **VimbaCapture** source node will become available. This node will produce a sequence of frames captured from a connected Allied Vision camera that uses the Vimba SDK.
